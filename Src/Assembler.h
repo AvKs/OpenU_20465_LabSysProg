@@ -13,6 +13,7 @@ Description:
 #define EXT_LEN						3
 #define REG_NUM						8
 #define MEM_LOC_NUM					1000
+#define MAX_CHARS_IN_LINE			255
 
 /* === Strings Definition === */
 #define FILE_EXT_ASSEMBLY			"as "
@@ -30,11 +31,11 @@ Description:
 #define ERR_MSG_ILLEGAL_LABEL		"Ileggal label"
 #define ERR_MSG_SYNTAX_ERROR		"Global syntax error"
 
-/* === Enum === */
+/* === Typedef && Enum === */
 enum boolean{ FALSE=0, TRUE=1 };
 enum opcode_type{ mov = 0, cmp, add, sub, not, clr, lea, inc, dec, jmp, bne, red, prn, jsr, rts, stop };
 enum addressing_type{ A = 0, E, R };
-enum statement_type{ blank, comment, direction, operation };
+typedef enum{ blank, comment, operation, direction } statement_type;
 enum direction_type{ data, string, extrn, entry, code, relocatable };
 
 /* === Structures === */
@@ -47,7 +48,9 @@ struct SymbolTable
 
 /* === Function Prototype === */
 char * addExtensionToFile(char * fileName, char extToAdd[]);
-FILE * openFileToRead(char * fileToRead);
+FILE * getFileAccess(char * fileToOper, char operation[]);
+void parseInputFile(FILE *inFile);
+enum statement_type identifyLineType(line);
 
 #endif
 
